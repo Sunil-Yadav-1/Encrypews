@@ -1,0 +1,2 @@
+rootProject.name = "Encrypews"
+include ':app'
