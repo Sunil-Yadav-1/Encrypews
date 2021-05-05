@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_name_size">25sp</dimen>
+    <dimen name="post_usr_image_size">40dp</dimen>
+    <dimen name="post_usr_img_margin_start">15dp</dimen>
+    <dimen name="civ_brdr_width">2dp</dimen>
+    <dimen name="usr_name_text_size">15sp</dimen>
+    <dimen name="divider_width">10dp</dimen>
+    <dimen name="post_image_height">300dp</dimen>
+    <dimen name="ll_padding">2dp</dimen>
+    <dimen name="post_usr_img_margin_end">5dp</dimen>
+    <dimen name="profile_photo_size">85dp</dimen>
+    <dimen name="ll_profile_padding">15dp</dimen>
+    <dimen name="profile_image_border">1dp</dimen>
+    <dimen name="posts_follower_info_tv_size">20sp</dimen>
+    <dimen name="posts_follower_info_text_size">12sp</dimen>
+    <dimen name="user_profile_ll_margin">15dp</dimen>
+    <dimen name="username_tv_margin_start">10dp</dimen>
+    <dimen name="edit_profile_text_size">15sp</dimen>
+    <dimen name="corner_radius_et">3dp</dimen>
+    <dimen name="edit_profile_padding">8dp</dimen>
+    <dimen name="edit_profile_margin">8dp</dimen>
+    <dimen name="edit_profile_marginTop">25dp</dimen>
+    <dimen name="radio_group_margin_top">25dp</dimen>
+    <dimen name="view_height">1dp</dimen>
+    <dimen name="tab_layout_margin_top">25dp</dimen>
+</resources>
