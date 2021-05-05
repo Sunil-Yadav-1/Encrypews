@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/ll_padding"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/usr_img_post"
+            android:layout_width="@dimen/post_usr_image_size"
+            android:layout_height="@dimen/post_usr_image_size"
+            app:civ_border_width="@dimen/civ_brdr_width"
+            android:layout_marginStart="@dimen/post_usr_img_margin_start"
+            android:layout_marginEnd="@dimen/post_usr_img_margin_end"
+            android:src="@drawable/usr_image_place_holder"/>
+        <TextView
+            android:id="@+id/tv_usrId_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="username"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="@dimen/usr_name_text_size"
+            />
+
+        <ImageView
+            android:id="@+id/more_post_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/more_post_iv"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ImageView
+        android:id="@+id/iv_post_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/post_image_height"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/ll_padding">
+
+        <ImageButton
+            android:id="@+id/ib_like_post_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/heart_like"
+            android:background="@color/white"
+            android:layout_marginStart="@dimen/post_usr_img_margin_start"/>
+        <ImageButton
+            android:id="@+id/ib_comment_post_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_chat_bubble_outline_26"
+            android:background="@color/white"
+            android:layout_marginStart="@dimen/post_usr_img_margin_start"/>
+        <ImageButton
+            android:id="@+id/ib_send_post_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_send_24"
+            android:background="@color/white"
+            android:layout_marginStart="@dimen/post_usr_img_margin_start"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/ib_save_post_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:src="@drawable/ic_baseline_save_alt_24"
+            android:background="@color/white"
+            android:layout_marginStart="@dimen/post_usr_img_margin_start"
+            android:layout_marginEnd="@dimen/post_usr_img_margin_end"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_width"
+
+        />
+
+</LinearLayout>

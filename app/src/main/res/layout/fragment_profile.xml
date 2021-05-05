@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.ProfileFragment">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/action_bar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppBarOverlay"
+            >
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/profile_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar_profile"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/user_profile_ll_margin">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_profile_image_pf"
+                    android:src="@drawable/usr_image_place_holder"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_width="@dimen/profile_image_border"
+                    android:layout_width="@dimen/profile_photo_size"
+                    android:layout_height="@dimen/profile_photo_size"/>
+                <LinearLayout
+                    android:padding="@dimen/ll_profile_padding"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+<!--                    posts linear layout-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_posts_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/random_post_no"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/posts_follower_info_tv_size"/>
+                        <TextView
+                            android:id="@+id/tv_posts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/posts_name"
+                            android:textColor="@color/lightblack"
+                            android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_followers_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/random_post_no"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/posts_follower_info_tv_size"/>
+                        <TextView
+                            android:id="@+id/tv_followers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/followers_name"
+                            android:textColor="@color/lightblack"
+                            android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_following_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/random_post_no"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/posts_follower_info_tv_size"/>
+                        <TextView
+                            android:id="@+id/tv_following"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/following_name"
+                            android:textColor="@color/lightblack"
+                            android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginStart="@dimen/username_tv_margin_start"
+                    android:id="@+id/tv_userNamet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_name_placeholder"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/posts_follower_info_text_size"/>
+                <TextView
+                    android:layout_marginStart="@dimen/username_tv_margin_start"
+                    android:id="@+id/tv_userBio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_bio_placeholder"
+                    android:textColor="@color/lightblack"
+                    android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/edit_profile_tv_background"
+                android:textColor="@color/lightblack"
+                android:textSize="@dimen/edit_profile_text_size"
+                android:padding="@dimen/edit_profile_padding"
+                android:layout_marginTop="@dimen/edit_profile_marginTop"
+                android:layout_marginStart="@dimen/edit_profile_margin"
+                android:layout_marginEnd="@dimen/edit_profile_margin"
+                android:text="@string/edit_profile_text"/>
+
+<!--            <RadioGroup-->
+<!--                android:id="@+id/rg_profile"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center_horizontal"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="@dimen/radio_group_margin_top"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                >-->
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <RadioButton-->
+<!--                    android:id="@+id/rb_btn_one"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:button="@drawable/ic_baseline_grid_on_24"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:buttonTint="@drawable/tab_color_selector"-->
+
+<!--                    />-->
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"/>-->
+<!--                <RadioButton-->
+<!--                    android:id="@+id/rb_btn_two"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:button="@drawable/ic_baseline_grid_on_24"-->
+<!--                    android:buttonTint="@drawable/tab_color_selector"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                   />-->
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--                <RadioButton-->
+<!--                    android:id="@+id/rb_btn_three"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:button="@drawable/ic_baseline_grid_on_24"-->
+<!--                    android:buttonTint="@drawable/tab_color_selector"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                   />-->
+<!--                <Space-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"/>-->
+
+<!--            </RadioGroup>-->
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/tab_layout_margin_top"
+                android:layout_height="wrap_content"
+                app:tabIconTint="@drawable/tab_color_selector"
+                app:tabIndicatorColor="@color/black"
+                android:id="@+id/tab_layout"/>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/pager"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</RelativeLayout>

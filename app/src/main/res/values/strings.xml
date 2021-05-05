@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Encrypews</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_navigation">search</string>
+    <string name="home_navigation">Home</string>
+    <string name="add_post_navigation">add_post</string>
+    <string name="activity_navigation">Activity</string>
+    <string name="profile_navigation">Profile</string>
+    <string name="message_menu">messaging</string>
+    <string name="app_name_secondary">Instagram</string>
+    <string name="search_bar">Search Bar</string>
+    <string name="activity_toolbar_title">Activity</string>
+    <string name="random_post_no">15</string>
+    <string name="posts_name">Posts</string>
+    <string name="followers_name">Followers</string>
+    <string name="following_name">Following</string>
+    <string name="user_bio_placeholder">Bio info user</string>
+    <string name="user_name_placeholder">USERNAME</string>
+    <string name="edit_profile_text">Edit Profile</string>
 </resources>

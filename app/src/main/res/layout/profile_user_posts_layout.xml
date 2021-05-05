@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_posts_ll"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:clickable="true"
+    android:layout_height="match_parent"
+    android:focusable="true">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_grid_on_24"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:backgroundTint="@drawable/tab_color_selector"/>
+
+</LinearLayout>
