@@ -3,20 +3,32 @@ package com.example.encrypews.adapters
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.encrypews.fragments.OtherPostListFragment
 import com.example.encrypews.fragments.PostsListFragment
 
 
-class ProfilePostFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class ProfilePostFragmentAdapter(fragment: Fragment,private val boolean: Boolean) : FragmentStateAdapter(fragment) {
 
      override fun createFragment(position: Int): Fragment {
-         val fragment = PostsListFragment()
-         fragment.arguments  = Bundle().apply {
+         val fragment1 = PostsListFragment()
+         val fragment2 = OtherPostListFragment()
+         fragment1.arguments  = Bundle().apply {
              putInt("object",position+1)
          }
-         return fragment
+         fragment2.arguments  = Bundle().apply {
+             putInt("object",position+1)
+         }
+         return if(boolean){
+             fragment1
+         }else{
+             fragment2
+         }
      }
 
      override fun getItemCount(): Int {
-         return 3
+         return  if(boolean){
+             3
+         }else
+             1
      }
 }

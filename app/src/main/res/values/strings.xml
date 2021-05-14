@@ -18,4 +18,22 @@
     <string name="user_bio_placeholder">Bio info user</string>
     <string name="user_name_placeholder">USERNAME</string>
     <string name="edit_profile_text">Edit Profile</string>
+    <string name="email_id">Email Id</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up_prompt_text">Don\'t have an account?Sign Up</string>
+    <string name="user_name">Name</string>
+    <string name="user_id">User Id</string>
+    <string name="sign_in_prompt_text">Already have an account?Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="edit_profile_heading">Edit Profile</string>
+    <string name="change_dp_text">Change Profile Photo</string>
+    <string name="user_name_id">User Name</string>
+    <string name="user_bio">Bio</string>
+    <string name="search_user_name">Search Users</string>
+    <string name="following">Following</string>
+    <string name="follow">Follow</string>
+    <string name="random_hyphen">-</string>
+    <string name="add_post_heading">Add Post</string>
+    <string name="add_caption">Caption</string>
 </resources>

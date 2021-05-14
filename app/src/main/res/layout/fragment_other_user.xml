@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.OtherUserFragment">
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_other_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:visibility="gone">
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/action_bar_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppBarOverlay"
+                    >
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/profile_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/white"
+
+                        />
+
+                </com.google.android.material.appbar.AppBarLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/user_profile_ll_margin">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_profile_image_pf"
+                        android:src="@drawable/usr_image_place_holder"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="@dimen/profile_image_border"
+                        android:layout_width="@dimen/profile_photo_size"
+                        android:layout_height="@dimen/profile_photo_size"/>
+                    <LinearLayout
+                        android:padding="@dimen/ll_profile_padding"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--                    posts linear layout-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_posts_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/random_hyphen"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/posts_follower_info_tv_size"/>
+                            <TextView
+                                android:id="@+id/tv_posts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/posts_name"
+                                android:textColor="@color/lightblack"
+                                android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_followers_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/random_hyphen"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/posts_follower_info_tv_size"/>
+                            <TextView
+                                android:id="@+id/tv_followers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/followers_name"
+                                android:textColor="@color/lightblack"
+                                android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_following_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/random_hyphen"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/posts_follower_info_tv_size"/>
+                            <TextView
+                                android:id="@+id/tv_following"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/following_name"
+                                android:textColor="@color/lightblack"
+                                android:textSize="@dimen/posts_follower_info_text_size"/>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/username_tv_margin_start"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/posts_follower_info_size" />
+                    <TextView
+                        android:layout_marginStart="@dimen/username_tv_margin_start"
+                        android:id="@+id/tv_userBio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/lightblack"
+                        android:textSize="@dimen/posts_follower_info_size"/>
+
+
+                </LinearLayout>
+
+                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                    android:id="@+id/btn_follow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/other_user_follow"
+                    android:layout_marginTop="@dimen/edit_profile_marginTop"
+                    android:layout_marginStart="@dimen/edit_profile_margin"
+                    android:layout_marginEnd="@dimen/edit_profile_margin"
+                    android:textColor="@color/white"/>
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/tab_layout_margin_top"
+            android:layout_height="wrap_content"
+            app:tabIconTint="@drawable/tab_color_selector"
+            app:tabIndicatorColor="@color/black"
+            android:layout_below="@id/scrollView"
+            android:id="@+id/tab_layout"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tab_layout"
+
+            android:id="@+id/pager"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_other_user"
+        tools:visibility="visible"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/grey"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

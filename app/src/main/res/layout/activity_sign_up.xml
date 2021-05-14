@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activities.SignInActivity">
+
+    <TextView
+        android:id="@+id/tv_signup_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Instagram"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sign_in_up_appName_size"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_marginStart="@dimen/margin_start_end_et"
+        android:layout_marginEnd="@dimen/margin_start_end_et"
+        android:layout_marginTop="@dimen/margin_Top_et_email">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/user_name"
+            android:textColorHint="@color/grey"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_marginStart="@dimen/margin_start_end_et"
+        android:layout_marginEnd="@dimen/margin_start_end_et"
+        android:layout_marginTop="@dimen/margin_Top_et_email">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/user_id"
+            android:textColorHint="@color/grey"
+            android:inputType="text"
+            android:textColor="@color/black"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_marginEnd="@dimen/margin_start_end_et"
+        android:layout_marginStart="@dimen/margin_start_end_et"
+        android:layout_marginTop="@dimen/margin_Top_et_email">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_id"
+            android:textColorHint="@color/grey"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_marginStart="@dimen/margin_start_end_et"
+        android:layout_marginEnd="@dimen/margin_start_end_et"
+        android:layout_marginTop="@dimen/margin_Top_et_email">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_sign_up_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:textColorHint="@color/grey"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/btn_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_Top_et_email"
+        android:layout_marginStart="@dimen/margin_start_end_et"
+        android:layout_marginEnd="@dimen/margin_start_end_et"
+        android:text="@string/sign_up"
+        android:paddingTop="@dimen/button_padding_top_bottom"
+        android:enabled="false"
+        app:spinning_bar_width="@dimen/spinning_bar_width"
+        app:spinning_bar_color="@color/white"
+        app:spinning_bar_padding="@dimen/spinning_bar_padding"
+        android:background="@drawable/shape_button_rounded"
+        android:paddingBottom="@dimen/button_padding_top_bottom"
+        />
+    <TextView
+        android:id="@+id/tv_sign_in_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tv_sign_up_in_prompt_margin"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/sign_in_prompt_text"/>
+
+</LinearLayout>

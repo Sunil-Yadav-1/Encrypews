@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="app_name_size">25sp</dimen>
+    <dimen name="app_name_size">35sp</dimen>
     <dimen name="post_usr_image_size">40dp</dimen>
     <dimen name="post_usr_img_margin_start">15dp</dimen>
     <dimen name="civ_brdr_width">2dp</dimen>
@@ -14,14 +14,42 @@
     <dimen name="profile_image_border">1dp</dimen>
     <dimen name="posts_follower_info_tv_size">20sp</dimen>
     <dimen name="posts_follower_info_text_size">12sp</dimen>
+    <dimen name="posts_follower_info_size">16sp</dimen>
     <dimen name="user_profile_ll_margin">15dp</dimen>
-    <dimen name="username_tv_margin_start">10dp</dimen>
+    <dimen name="username_tv_margin_start">12dp</dimen>
     <dimen name="edit_profile_text_size">15sp</dimen>
     <dimen name="corner_radius_et">3dp</dimen>
     <dimen name="edit_profile_padding">8dp</dimen>
-    <dimen name="edit_profile_margin">8dp</dimen>
+    <dimen name="edit_profile_margin">12dp</dimen>
     <dimen name="edit_profile_marginTop">25dp</dimen>
     <dimen name="radio_group_margin_top">25dp</dimen>
     <dimen name="view_height">1dp</dimen>
     <dimen name="tab_layout_margin_top">25dp</dimen>
+    <dimen name="sign_in_up_appName_size">55sp</dimen>
+    <dimen name="margin_Top_et_email">15dp</dimen>
+    <dimen name="margin_start_end_et">30dp</dimen>
+    <dimen name="button_padding_top_bottom">8dp</dimen>
+    <dimen name="tv_sign_up_in_prompt_margin">30dp</dimen>
+    <dimen name="spinning_bar_width">2dp</dimen>
+    <dimen name="spinning_bar_padding">6dp</dimen>
+    <dimen name="padding_ll_edit_profile">12dp</dimen>
+    <dimen name="tv_edit_profile_size">22sp</dimen>
+    <dimen name="margin_start_tv_edit_profile">14dp</dimen>
+    <dimen name="civ_size_edit_profile">100dp</dimen>
+    <dimen name="marginTop_civ_ep">25dp</dimen>
+    <dimen name="marginTop_tv_change_dp">10dp</dimen>
+    <dimen name="change_dp_tv_size">16sp</dimen>
+    <dimen name="marginTop_et_ep">15dp</dimen>
+    <dimen name="margin_top_et">10dp</dimen>
+    <dimen name="civ_list_size">50dp</dimen>
+    <dimen name="ll_list_padding">8dp</dimen>
+    <dimen name="ll_list_secondary_padding">10dp</dimen>
+    <dimen name="user_name_size">15sp</dimen>
+    <dimen name="tv_margin_end">14dp</dimen>
+    <dimen name="ll_list_margin_start">8dp</dimen>
+    <dimen name="padding_add_post_fragment">15dp</dimen>
+    <dimen name="iv_dimen_add_post">100dp</dimen>
+    <dimen name="image_post_profile_size">150dp</dimen>
+    <dimen name="divider_width_post">2dp</dimen>
+    <dimen name="follow_tv_text_size">18sp</dimen>
 </resources>

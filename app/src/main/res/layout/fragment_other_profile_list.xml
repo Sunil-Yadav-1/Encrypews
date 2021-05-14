@@ -3,15 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.PostsListFragment">
-
-
+    tools:context=".fragments.OtherPostListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rv_post_list_fragment"
+        android:id="@+id/rv_other_post_list_fragment"
         tools:listitem="@layout/posts_list_item"/>
 
 </LinearLayout>
