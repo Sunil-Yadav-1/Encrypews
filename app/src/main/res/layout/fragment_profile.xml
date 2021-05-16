@@ -30,10 +30,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
-
+                    style="@style/AppBarOverlay"
                     />
 
             </com.google.android.material.appbar.AppBarLayout>
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

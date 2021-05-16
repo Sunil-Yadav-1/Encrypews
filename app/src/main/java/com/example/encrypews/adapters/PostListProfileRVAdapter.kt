@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 class PostListProfileRVAdapter : RecyclerView.Adapter<PostListProfileRVAdapter.MyViewHolder>(){
    var posts : ArrayList<Post> = ArrayList()
 
-    var list = listOf<Int>(1,2,3,4,5,6,7)
+
 
 
     inner class MyViewHolder(val binding : PostsListItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -27,12 +27,9 @@ class PostListProfileRVAdapter : RecyclerView.Adapter<PostListProfileRVAdapter.M
         val post = posts[position]
         Picasso.get().load(post.imageUrl).into(binding.ivPostProfile)
 
-//        val x = list[position]
-//        binding.tvNameList.text = x.toString()
     }
 
     override fun getItemCount(): Int {
-//        return list.size
         return posts.size
     }
 }

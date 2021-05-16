@@ -64,7 +64,7 @@ class OtherUserFragment : Fragment() {
 
         viewModel.viewModelScope.launch(Dispatchers.IO){
             viewModel.loadUser(userId)
-            viewModel.getPosts(userId)
+//            viewModel.getPosts(userId)
             viewModel.isFollowed(userId)
             withContext(Dispatchers.Main){
                 val user = viewModel.user.value
@@ -79,8 +79,11 @@ class OtherUserFragment : Fragment() {
         }
 
 
-        viewModel.postCount.observe(viewLifecycleOwner, Observer { value->
-            binding.tvPostsCount.text = value.toString()
+//        viewModel.postCount.observe(viewLifecycleOwner, Observer { value->
+//            binding.tvPostsCount.text = value.toString()
+//        })
+        viewModel.posts.observe(viewLifecycleOwner, Observer { list->
+            binding.tvPostsCount.text = list.size.toString()
         })
 
         viewModel.isfollowed.observe(viewLifecycleOwner, Observer { bool->

@@ -4,10 +4,9 @@ import android.util.Log
 import com.example.encrypews.activities.EditProfileActivity
 import com.example.encrypews.activities.SignUpActivity
 import com.example.encrypews.constants.Constants
+import com.example.encrypews.models.Comment
 import com.example.encrypews.models.Post
 import com.example.encrypews.models.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.Query
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -33,15 +32,21 @@ class MyFireBaseDatabase {
         }
     }
 
-    suspend fun loadUser(id:String = MyFireBaseAuth.getUserId()) : DataSnapshot?{
+    suspend fun loadUser(id:String = MyFireBaseAuth.getUserId()) : User{
 
         try{
-            val data = dbRef.child(Constants.USERS).child(id).get().await()
-            Log.d("data fetched","$data")
-            return data
+            val dataSnapshot= dbRef.child(Constants.USERS).child(id).get().await()
+            Log.d("data fetched","$dataSnapshot")
+
+            val data = dataSnapshot.getValue(User::class.java)
+            if(data != null){
+                return data
+            }else{
+                return User()
+            }
         }catch (e : Exception){
             Log.e("Error load user",e.message.toString())
-            return null
+            return User()
         }
 
     }
@@ -147,31 +152,84 @@ class MyFireBaseDatabase {
 
 
     suspend fun getFollowers(id:String): List<String>{
-       val ref= dbRef.child(Constants.FOLLOW).child(id).child(Constants.FOLLOWERS)
-        val snapshot = ref.get().await()
-        var list = ArrayList<String>()
-       if(snapshot.value != null){
-           for(ds in snapshot.children){
-               if(ds.key != null){
-                   list.add(ds.key!!)
+       try{
+           val ref= dbRef.child(Constants.FOLLOW).child(id).child(Constants.FOLLOWERS)
+           val snapshot = ref.get().await()
+           val list = ArrayList<String>()
+           if(snapshot.value != null){
+               for(ds in snapshot.children){
+                   if(ds.key != null){
+                       list.add(ds.key!!)
+                   }
                }
            }
+           Log.d("followers $id","$list")
+           return list
+       }catch (e:Exception){
+           Log.e("getFollowers",e.message.toString())
+           return ArrayList<String>()
        }
-        return list
     }
     suspend fun getFollowing(id:String): List<String>{
-        val ref= dbRef.child(Constants.FOLLOW).child(id).child(Constants.FOLLOWING)
-        val snapshot = ref.get().await()
-        var list = ArrayList<String>()
-        if(snapshot.value != null){
-            for(ds in snapshot.children){
-                if(ds.key != null){
-                    list.add(ds.key!!)
-                }
-            }
-        }
-        return list
+       try{
+           val ref= dbRef.child(Constants.FOLLOW).child(id).child(Constants.FOLLOWING)
+           val snapshot = ref.get().await()
+           val list = ArrayList<String>()
+           if(snapshot.value != null){
+               for(ds in snapshot.children){
+                   if(ds.key != null){
+                       list.add(ds.key!!)
+                   }
+               }
+           }
+           Log.d("following $id","$list")
+           return list
+       }catch (e:Exception){
+           Log.e("getFollowing",e.message.toString())
+           return ArrayList<String>()
+       }
     }
+
+     fun likePost(idPost:String,idUser:String = MyFireBaseAuth.getUserId()){
+        val ref = dbRef.child(Constants.LIKES).child(idPost)
+        ref.child(idUser).setValue(true)
+        Log.d("post liked","By $idUser to $idPost")
+    }
+
+    fun unlikePost(idPost:String,idUser:String = MyFireBaseAuth.getUserId()){
+        val ref = dbRef.child(Constants.LIKES).child(idPost)
+        ref.child(idUser).removeValue()
+        Log.d("post unliked","Unliked")
+    }
+
+    suspend fun postComment(comment:Comment){
+        val ref = dbRef.child(Constants.COMMENTS).child(comment.postId)
+       try{
+           val key = ref.push().key
+           if (key != null) {
+               comment.key = key
+           }
+           if (key != null) {
+               ref.child(key).setValue(comment).await()
+           }
+       }catch (e:Exception){
+           Log.e("postComment",e.message.toString())
+       }
+
+    }
+
+
+//    suspend fun getNoOfLikes(id: String): Int {
+//        val ref = dbRef.child(Constants.LIKES).child(id)
+//        val snapshot = ref.get().await()
+//        return snapshot.children.count()
+//    }
+//
+//    suspend fun getNoOfComments(id:String):Int{
+//        val ref = dbRef.child(Constants.COMMENTS).child(id)
+//        val snapshot = ref.get().await()
+//        return  snapshot.children.count()
+//    }
 
 
 

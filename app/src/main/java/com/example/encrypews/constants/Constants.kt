@@ -39,6 +39,12 @@ object Constants {
     const val  PUBLISHEDBY = "publishedBy"
     const val CAPTION = "caption"
 
+    const val LIKES= "Likes"
+    const val COMMENTS = "Comments"
+
+
+    const val POSTEXTRA ="PostExtra"
+
 
 
 

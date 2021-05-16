@@ -44,7 +44,7 @@ class AddPostActivity : AppCompatActivity() {
 
     private var CropImageActivityContracts = object : ActivityResultContract<Any?, Uri?>(){
         override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity().setAspectRatio(1,1).getIntent(this@AddPostActivity)
+            return CropImage.activity().setAspectRatio(100,161).getIntent(this@AddPostActivity)
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {

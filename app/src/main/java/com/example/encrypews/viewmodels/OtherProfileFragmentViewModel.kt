@@ -21,8 +21,8 @@ class OtherProfileFragmentViewModel : ViewModel() {
     val user : LiveData<User>
         get() = _user
 
-    private var _posts = ArrayList<Post>()
-    val posts : List<Post> get() = _posts
+    private var _posts = MutableLiveData<List<Post>>()
+    val posts : LiveData<List<Post>> get() = _posts
 
     private var _followers =MutableLiveData<List<String>>()
     val followers : LiveData<List<String>> get() = _followers
@@ -33,27 +33,26 @@ class OtherProfileFragmentViewModel : ViewModel() {
     private var _isfollowed = MutableLiveData<Boolean>()
     val isfollowed : LiveData<Boolean> get() = _isfollowed
 
-    var _postCount = MutableLiveData<Int>()
-    val postCount : LiveData<Int> get() = _postCount
 
 
 
 
 
-    suspend fun getPosts(id:String = MyFireBaseAuth.getUserId()){
-        Log.e("size bef","${postCount.value}")
-        val posts = MyFireBaseDatabase().getPosts(id)
-        Log.e("psots","$posts")
-        _posts = posts as ArrayList<Post>
-        _postCount.postValue(posts.size)
 
-    }
+//    suspend fun getPosts(id:String = MyFireBaseAuth.getUserId()){
+//        Log.e("size bef","${postCount.value}")
+//        val posts = MyFireBaseDatabase().getPosts(id)
+//        Log.e("psots","$posts")
+//        _posts = posts as ArrayList<Post>
+//        _postCount.postValue(posts.size)
+//
+//    }
 
 
 
 
     suspend fun loadUser(id:String = MyFireBaseAuth.getUserId()){
-        _user.postValue(MyFireBaseDatabase().loadUser(id)?.getValue(User::class.java))
+        _user.postValue(MyFireBaseDatabase().loadUser(id))
         Log.d("fetched user","${_user.value}")
     }
 
@@ -112,6 +111,7 @@ class OtherProfileFragmentViewModel : ViewModel() {
         val dbref = Firebase.database.reference.child(Constants.FOLLOW).child(id)
         val ref1 = dbref.child(Constants.FOLLOWING)
         val ref2 = dbref.child(Constants.FOLLOWERS)
+        val ref3 = Firebase.database.reference.child(Constants.POSTS).child(id)
 
         ref1.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -149,6 +149,25 @@ class OtherProfileFragmentViewModel : ViewModel() {
             override fun onCancelled(error: DatabaseError) {
                 Log.e("flwrs err DS",error.message)
             }
+        })
+
+        ref3.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("posts snapshot","$snapshot")
+                var list = ArrayList<Post>()
+                for(ds in snapshot.children){
+                    val post = ds.getValue(Post::class.java)
+                    if(post != null){
+                        list.add(post)
+                    }
+                }
+               _posts.value =list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("errPstsDb",error.message)
+            }
+
         })
     }
 

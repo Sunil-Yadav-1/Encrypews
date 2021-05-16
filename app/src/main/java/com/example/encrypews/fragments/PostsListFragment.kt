@@ -50,8 +50,12 @@ class   PostsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.postCount.observe(viewLifecycleOwner, Observer { data ->
-          adapter.posts = viewModel.posts as ArrayList<Post>
+//        viewModel.postCount.observe(viewLifecycleOwner, Observer { data ->
+//          adapter.posts = viewModel.posts as ArrayList<Post>
+//            adapter.notifyDataSetChanged()
+//        })
+        viewModel.posts.observe(viewLifecycleOwner, Observer {list->
+            adapter.posts = list as ArrayList<Post>
             adapter.notifyDataSetChanged()
         })
     }

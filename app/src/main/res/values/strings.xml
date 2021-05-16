@@ -36,4 +36,9 @@
     <string name="random_hyphen">-</string>
     <string name="add_post_heading">Add Post</string>
     <string name="add_caption">Caption</string>
+    <string name="count_likes">%1$d Likes</string>
+    <string name="view_comments">View all %1$d comments</string>
+    <string name="caption_username">%1$d</string>
+    <string name="caption_content">%1$d</string>
+    <string name="add_comment">Add Comment</string>
 </resources>

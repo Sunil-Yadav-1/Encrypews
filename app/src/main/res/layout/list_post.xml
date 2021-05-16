@@ -4,7 +4,7 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="username"
+            android:textStyle="bold"
             android:fontFamily="sans-serif"
             android:textColor="@color/black"
             android:textSize="@dimen/usr_name_text_size"
@@ -41,15 +42,19 @@
 
     <ImageView
         android:id="@+id/iv_post_image"
+        android:layout_marginTop="@dimen/iv_post_home_marginTopBottom"
+        android:tag="like"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/post_image_height"/>
+        android:layout_height="@dimen/post_image_height"
+        android:layout_marginBottom="@dimen/iv_post_home_marginTopBottom"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="@dimen/ll_padding">
+        android:layout_marginTop="@dimen/ll_margin_top_likes"
+        >
 
         <ImageButton
             android:id="@+id/ib_like_post_home"
@@ -88,6 +93,63 @@
             android:layout_marginEnd="@dimen/post_usr_img_margin_end"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/ll_margin_top_likes"
+        android:padding="@dimen/ll_likes_padding">
+
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            tools:text="15 likes"
+            android:layout_marginStart="@dimen/tv_likes_marginStart"
+            android:text="@string/count_likes"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/caption_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                tools:text="ssj_saijin"
+                android:layout_marginTop="@dimen/likes_comment_margin_top"
+                android:layout_marginStart="@dimen/tv_likes_marginStart"
+                />
+            <TextView
+                android:id="@+id/caption_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightblack"
+
+                tools:text="ssj_saijin"
+                android:layout_marginTop="@dimen/likes_comment_margin_top"
+                android:layout_marginStart="@dimen/tv_likes_marginStart"
+                />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            tools:text="View all 7 comments"
+            android:text="@string/view_comments"
+            android:layout_marginTop="@dimen/likes_comment_margin_top"
+            android:layout_marginStart="@dimen/tv_likes_marginStart"/>
+
+    </LinearLayout>
 
 
     <View

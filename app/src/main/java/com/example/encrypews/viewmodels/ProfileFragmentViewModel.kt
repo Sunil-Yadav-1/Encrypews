@@ -21,26 +21,32 @@ class ProfileFragmentViewModel: ViewModel() {
    private  var _user = MutableLiveData<User>()
     val user : LiveData<User>get() = _user
 
-    private var _posts = ArrayList<Post>()
-    val posts : List<Post> get() = _posts
+    private var _posts = MutableLiveData<List<Post>>()
+    val posts : LiveData<List<Post>> get() = _posts
 
-     var _postCount =MutableLiveData<Int>()
-    val postCount :LiveData<Int> get() = _postCount
+//     var _postCount =MutableLiveData<Int>()
+//    val postCount :LiveData<Int> get() = _postCount
 
-    suspend fun getPosts(id:String = MyFireBaseAuth.getUserId()){
-        Log.e("size bef","${postCount.value}")
-        val posts = MyFireBaseDatabase().getPosts(id)
-        Log.e("psots","$posts")
-        _posts = posts as ArrayList<Post>
-        _postCount.postValue(posts.size)
+    private var _followers =MutableLiveData<List<String>>()
+    val followers : LiveData<List<String>> get() = _followers
 
-    }
+    private var _following = MutableLiveData<List<String>>()
+    val following : LiveData<List<String>> get() = _following
+
+//    suspend fun getPosts(id:String = MyFireBaseAuth.getUserId()){
+//        Log.e("size bef","${postCount.value}")
+//        val posts = MyFireBaseDatabase().getPosts(id)
+//        Log.e("psots","$posts")
+//        _posts = posts as ArrayList<Post>
+//        _postCount.postValue(posts.size)
+//
+//    }
 
 
 
 
     suspend fun loadUser(){
-        _user.postValue(MyFireBaseDatabase().loadUser()?.getValue(User::class.java))
+        _user.postValue(MyFireBaseDatabase().loadUser())
         Log.d("fetched user","${_user.value}")
     }
 
@@ -56,6 +62,70 @@ class ProfileFragmentViewModel: ViewModel() {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("DatabaseError","${error.message}")
+            }
+
+        })
+    }
+
+    fun addPostsChangeListener(id:String = MyFireBaseAuth.getUserId()){
+        val dbref = Firebase.database.reference.child(Constants.FOLLOW).child(id)
+        val ref1 = dbref.child(Constants.FOLLOWING)
+        val ref2 = dbref.child(Constants.FOLLOWERS)
+        val ref3 = Firebase.database.reference.child(Constants.POSTS).child(id)
+
+        ref1.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("snapshot following","$snapshot")
+                val list = ArrayList<String>()
+                for(ds in snapshot.children){
+                    if(ds.key != null){
+                        list.add(ds.key!!)
+                    }
+                }
+
+                _following.value = list
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("flwng err DS in PFVM",error.message)
+            }
+
+        })
+
+        ref2.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("snapshot followers PFVM","$snapshot")
+                val list = ArrayList<String>()
+                for(ds in snapshot.children){
+                    if(ds.key != null){
+                        list.add(ds.key!!)
+                    }
+                }
+
+                _followers.value = list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("flwrs err DS PFVM",error.message)
+            }
+        })
+
+        ref3.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("posts snapshot","$snapshot")
+                var list = ArrayList<Post>()
+                for(ds in snapshot.children){
+                    val post = ds.getValue(Post::class.java)
+                    if(post != null){
+                        list.add(post)
+                    }
+                }
+                _posts.value =list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("errPstsDb",error.message)
             }
 
         })

@@ -46,18 +46,29 @@ class ProfileFragment : Fragment() {
         val view = binding.root
         setupActionBar()
         viewModel = ViewModelProvider(requireActivity()).get(ProfileFragmentViewModel :: class.java)
-
+        viewModel.addPostsChangeListener()
 
 
         viewModel.viewModelScope.launch (Dispatchers.IO){
             viewModel.loadUser()
-            viewModel.getPosts()
             viewModel.addUserChangeListener()
             Log.d("viewModel","${viewModel.user.value}")
         }
 
-        viewModel.postCount.observe(viewLifecycleOwner, Observer { data ->
-            binding.tvPostsCount.text = viewModel.postCount.value.toString()
+//        viewModel.postCount.observe(viewLifecycleOwner, Observer { data ->
+//            binding.tvPostsCount.text = viewModel.postCount.value.toString()
+//        })
+
+        viewModel.posts.observe(viewLifecycleOwner, Observer { list ->
+            binding.tvPostsCount.text = list.size.toString()
+        })
+
+        viewModel.followers.observe(viewLifecycleOwner, Observer { list ->
+            binding.tvFollowersCount.text = list.size.toString()
+        })
+
+        viewModel.following.observe(viewLifecycleOwner, Observer { list ->
+            binding.tvFollowingCount.text = list.size.toString()
         })
 
 
