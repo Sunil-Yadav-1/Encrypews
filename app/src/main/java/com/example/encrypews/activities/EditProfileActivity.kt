@@ -7,7 +7,6 @@ import android.net.Uri
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -16,7 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.encrypews.R
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.Utils.Constants
+import com.example.encrypews.Utils.ResizeImage
 import com.example.encrypews.databinding.ActivityEditProfileBinding
 import com.example.encrypews.firebase.MyFireBaseDatabase
 import com.example.encrypews.firebase.MyFireBaseStorage
@@ -49,7 +49,11 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            return CropImage.getActivityResult(intent).uri
+            return  if(CropImage.getActivityResult(intent) != null){
+                CropImage.getActivityResult(intent).uri
+            }else{
+                null
+            }
         }
 
     }
@@ -106,7 +110,8 @@ class EditProfileActivity : AppCompatActivity() {
             it.visibility = GONE
             binding.progressBarEditProfile.visibility = VISIBLE
             if(croppedImageUri != null){
-                MyFireBaseStorage().uploadImage(this,croppedImageUri)
+                val compressedUri = ResizeImage(this).getCompressedImageUriFromUri(croppedImageUri!!,400,true)
+                MyFireBaseStorage().uploadImage(this,compressedUri)
             }else{
                 uploadDetails()
             }

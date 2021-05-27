@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.encrypews.R
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.Utils.Constants
 import com.example.encrypews.databinding.ListPostBinding
 import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.firebase.MyFireBaseDatabase
@@ -19,10 +19,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class HomePageRVAdapter(private val context:Context)
     : RecyclerView.Adapter<HomePageRVAdapter.MyViewHolder>() {
@@ -30,6 +27,10 @@ class HomePageRVAdapter(private val context:Context)
     var list = ArrayList<Post>()
     private var onClickListener : ONCLICK? = null
     private lateinit var binding:ListPostBinding
+
+
+
+    private var like:Boolean = false
 
     inner class MyViewHolder(val binding:ListPostBinding):RecyclerView.ViewHolder(binding.root)
 
@@ -43,6 +44,7 @@ class HomePageRVAdapter(private val context:Context)
         val postid= post.postId
         Log.e("position","$position")
 
+        var user = User()
 
         val likeRef = ref.child(Constants.LIKES).child(postid)
 
@@ -82,19 +84,23 @@ class HomePageRVAdapter(private val context:Context)
 
 
         CoroutineScope(Dispatchers.IO).launch {
-           val user : User = MyFireBaseDatabase().loadUser(post.publishedBy)
+            user  = MyFireBaseDatabase().loadUser(post.publishedBy)
             withContext(Dispatchers.Main){
                 binding.tvUsrIdPost.text = user.userName
                 binding.captionUsername.text = user.userName
-                Picasso.get().load(user.userImage).into(binding.usrImgPost)
+                if(user.userImage != ""){
+                    Picasso.get().load(user.userImage).placeholder(R.color.offWhite).into(binding.usrImgPost)
+                }else{
+                    binding.usrImgPost.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.usr_image_place_holder))
+                }
             }
         }
-        Picasso.get().load(post.imageUrl).placeholder(R.color.grey).into(binding.ivPostImage)
+        Picasso.get().load(post.imageUrl).placeholder(R.color.offWhite).into(binding.ivPostImage)
         binding.captionContent.text = post.caption
 
         if(onClickListener != null){
             binding.captionUsername.setOnClickListener{
-                onClickListener!!.onclickPublisher(post)
+                onClickListener!!.onclickPublisher(post,user)
             }
             binding.ibLikePostHome.setOnClickListener{
                 if(it.tag == "liked"){
@@ -111,10 +117,34 @@ class HomePageRVAdapter(private val context:Context)
                 onClickListener!!.onclickComment(post)
             }
             binding.ibSendPostHome.setOnClickListener{
-                onClickListener!!.onclickMessage(post)
+                onClickListener!!.onclickMessage(post,user)
             }
             binding.usrImgPost.setOnClickListener{
-                onClickListener!!.onclickPublisher(post)
+                onClickListener!!.onclickPublisher(post,user)
+            }
+
+            binding.morePostOptions.setOnClickListener{
+
+                onClickListener!!.onclickMore(post,user)
+            }
+
+            binding.ivPostImage.setOnClickListener{
+                if(like){
+                    if(binding.ibLikePostHome.tag == "liked"){
+                        onClickListener!!.onclickLike(post,false)
+                    }else{
+                        onClickListener!!.onclickLike(post,true)
+                    }
+                }else{
+                    like = true
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        delay(500)
+                        like = false
+                    }
+                }
+
+
             }
 
         }
@@ -131,9 +161,9 @@ class HomePageRVAdapter(private val context:Context)
     interface ONCLICK{
         fun onclickLike(post:Post,boolean: Boolean)
         fun onclickComment(post:Post)
-        fun onclickPublisher(post:Post)
-        fun onclickMessage(post:Post)
-
+        fun onclickPublisher(post:Post,user: User)
+        fun onclickMessage(post:Post,user:User)
+        fun onclickMore(post: Post,user: User)
     }
 
     fun setOnClickListener(listener:ONCLICK){

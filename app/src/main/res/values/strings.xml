@@ -41,4 +41,16 @@
     <string name="caption_username">%1$d</string>
     <string name="caption_content">%1$d</string>
     <string name="add_comment">Add Comment</string>
+    <string name="message">Message</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="Typing">Typing…</string>
+    <string name="Monday">Monday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="Sunday">Sunday</string>
+    <string name="unfollow">unfollow</string>
+    <string name="save_post">save post</string>
 </resources>

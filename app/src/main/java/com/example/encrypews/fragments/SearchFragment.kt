@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.encrypews.R
 import com.example.encrypews.adapters.UserSearchRvAdapter
@@ -16,7 +17,7 @@ import com.example.encrypews.models.User
 import com.example.encrypews.viewmodels.SearchFragmentViewModel
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
     private  var _binding:FragmentSearchBinding? = null
     private val binding  get() = _binding!!
     private lateinit var viewModel : SearchFragmentViewModel
@@ -37,7 +38,7 @@ class SearchFragment : Fragment() {
         setupActionBar()
         viewModel = ViewModelProvider(this).get(SearchFragmentViewModel::class.java)
 
-        val adapter = UserSearchRvAdapter()
+        val adapter = UserSearchRvAdapter(requireContext())
         binding.rvSearchFragment.layoutManager = LinearLayoutManager(activity)
 
 
@@ -51,8 +52,7 @@ class SearchFragment : Fragment() {
                 list.add(user!!.userName)
                 bundle.putStringArrayList("Bndl",list)
                 otherUserFragment.arguments = bundle
-                activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.flmain,otherUserFragment)?.addToBackStack("tag")?.commit()
+                findNavController().navigate(R.id.otherUserFragment,bundle)
             }
 
 

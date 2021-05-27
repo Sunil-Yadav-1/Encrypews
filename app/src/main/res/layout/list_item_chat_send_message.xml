@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="@dimen/cl_marginStart"
+    android:layout_marginEnd="@dimen/cl_marginEnd"
+    android:layout_marginTop="@dimen/margin_topBottom_cl"
+    android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/blue"
+        android:elevation="@dimen/zero_dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        android:theme="@style/chatSendAppearance">
+
+       <com.google.android.flexbox.FlexboxLayout
+           android:id="@+id/flex_box_send"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:padding="@dimen/flex_box_padding"
+           app:flexWrap="wrap"
+           app:justifyContent="flex_end"
+           app:alignItems="flex_end">
+           <TextView
+               android:id="@+id/tv_content_send"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="@color/white"
+               android:textSize="@dimen/text_size_chat"
+               tools:text="Hello There"/>
+           <TextView
+               android:id="@+id/tv_time_send"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="@color/offWhite"
+               android:layout_marginStart="@dimen/chat_time_margin_Start"
+               android:textSize="@dimen/text_size_chat_time"
+               tools:text="12:00 AM"/>
+
+       </com.google.android.flexbox.FlexboxLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.Utils.Constants
 import com.example.encrypews.firebase.MyFireBaseDatabase
 import com.example.encrypews.models.User
 import com.google.firebase.database.DataSnapshot

@@ -10,7 +10,7 @@ import com.example.encrypews.R
 import com.example.encrypews.databinding.FragmentActivityBinding
 
 
-class ActivityFragment : Fragment() {
+class ActivityFragment : Fragment(R.layout.fragment_activity) {
         private var _binding:FragmentActivityBinding? = null
         private val binding get() = _binding!!
 

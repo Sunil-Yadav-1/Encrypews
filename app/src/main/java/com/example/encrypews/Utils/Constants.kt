@@ -1,19 +1,13 @@
-package com.example.encrypews.constants
-
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.MutableLiveData
-import com.example.encrypews.models.User
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityOptionsCompat
-import com.theartofdev.edmodo.cropper.CropImage
+package com.example.encrypews.Utils
 
 object Constants {
+    const val INBOX_MESSAGE = "inbox_message"
+    const val INBOX_TIME= "inbox_time"
+    const val NOTIFICATION_CHANNEL_ID ="com.example.encrypews"
+    const val SHARED_PREFERENCE_USER = "SharedPreferenceUser"
+    const val SP_USER = "SP_User"
+    const val SP_TOKEN = "SP_Token"
+
     const val USERIMURL ="user_image_url"
     const val USERS = "Users"
     const val POSTS = "Posts"
@@ -45,6 +39,17 @@ object Constants {
 
     const val POSTEXTRA ="PostExtra"
 
+    const val CHATS = "Chats"
+    const val MESSAGES = "Messages"
+
+    const val FRIEND_ID = "friendId"
+    const val FRIEND_NAME = "FriendName"
+    const val FRIEND_IMAGE_URL = "FriendImageUrl"
+
+    const val FRIEND_USER = "friend_User"
+    const val OWN_USER = "Own_User"
+
+    const val COUNT = "count"
 
 
 

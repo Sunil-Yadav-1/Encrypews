@@ -38,6 +38,10 @@ class   PostsListFragment : Fragment() {
         adapter = PostListProfileRVAdapter()
 
         binding.rvPostListFragment.layoutManager = GridLayoutManager(activity,3)
+        binding.rvPostListFragment.hasFixedSize()
+        binding.rvPostListFragment.setItemViewCacheSize(20)
+        binding.rvPostListFragment.isDrawingCacheEnabled = true
+        binding.rvPostListFragment.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
 
         binding.rvPostListFragment.adapter = adapter
 

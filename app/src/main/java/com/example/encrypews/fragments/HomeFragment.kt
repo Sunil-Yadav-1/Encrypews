@@ -1,36 +1,48 @@
 package com.example.encrypews.fragments
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.encrypews.R
+import com.example.encrypews.Utils.Constants
+import com.example.encrypews.activities.ChatActivity
 import com.example.encrypews.activities.CommentActivity
+import com.example.encrypews.activities.InboxActivity
+import com.example.encrypews.activities.MainActivity
 import com.example.encrypews.adapters.HomePageRVAdapter
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.customdialogs.CustomBottomSheetDialogFragment
+import com.example.encrypews.customdialogs.CustomDialogFragment
 import com.example.encrypews.databinding.FragmentHomeBinding
 import com.example.encrypews.models.Post
+import com.example.encrypews.models.User
 import com.example.encrypews.viewmodels.HomeFragmentViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
      private var _binding : FragmentHomeBinding? = null
      private val binding  get()= _binding!!
+    private var mprogressDialog:CustomBottomSheetDialogFragment? = null
 
     private lateinit var viewModel : HomeFragmentViewModel
     private lateinit var adapter : HomePageRVAdapter
+
+    private lateinit var ownUser:User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -50,6 +62,13 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(HomeFragmentViewModel::class.java)
         adapter = HomePageRVAdapter(requireActivity())
         binding.rvHome.layoutManager = LinearLayoutManager(activity)
+        binding.rvHome.hasFixedSize()
+        binding.rvHome.setItemViewCacheSize(20)
+        binding.rvHome.isDrawingCacheEnabled = true
+        binding.rvHome.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+
+        getOwnUser()
+
         adapter.setOnClickListener(object : HomePageRVAdapter.ONCLICK{
             override fun onclickLike(post: Post,boolean: Boolean) {
                if(boolean){
@@ -68,25 +87,34 @@ class HomeFragment : Fragment() {
 
 
 
-            override fun onclickPublisher(post: Post) {
-                makeToast("useridother")
+            override fun onclickPublisher(post: Post,user: User) {//for now opens the chat activity
+                makeToast("Publisher Clicked")
             }
 
-            override fun onclickMessage(post: Post) {
-                makeToast("Coming Soon")
+            override fun onclickMessage(post: Post,user:User) {
+                gotoActivityChat(user)
+            }
+
+            override fun onclickMore(post: Post, user: User) {
+                val userString = Gson().toJson(user)
+                val postString = Gson().toJson(post)
+                showcustomDialog(userString,postString)
             }
 
         })
         binding.rvHome.adapter = adapter
-
-
-        viewModel.viewModelScope.launch (Dispatchers.IO){
-            viewModel.getPostsForUser()
+        binding.srvHome.setOnRefreshListener {
+            getPostsUser()
         }
+
+       getPostsUser()
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { list->
             adapter.list = list as ArrayList<Post>
             adapter.notifyDataSetChanged()
+            if(binding.srvHome.isRefreshing){
+                binding.srvHome.isRefreshing = false
+            }
 
         })
 
@@ -145,7 +173,8 @@ class HomeFragment : Fragment() {
         when(item.itemId){
             R.id.messaging_chat -> {
 
-                Toast.makeText(activity?.applicationContext,"Messaging Coming Soon",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity?.applicationContext,"Messaging Coming Soon",Toast.LENGTH_SHORT).show()
+                gotoActivityInbox(ownUser)
                 return true
             }
 
@@ -165,6 +194,43 @@ class HomeFragment : Fragment() {
         intent.putExtra(Constants.POSTEXTRA,post)
         startActivity(intent)
 
+    }
+
+    private fun gotoActivityInbox(user: User){
+        val intent = Intent(activity,InboxActivity::class.java)
+        intent.putExtra(Constants.OWN_USER,user)
+        startActivity(intent)
+    }
+    private fun gotoActivityChat(user: User){
+        val intent = Intent(activity,ChatActivity::class.java)
+        intent.putExtra(Constants.FRIEND_USER,user)
+        startActivity(intent)
+    }
+
+    private fun getPostsUser(){
+        viewModel.viewModelScope.launch (Dispatchers.IO){
+            viewModel.getPostsForUser()
+
+        }
+    }
+
+    private fun getOwnUser(){
+        val user:User = (activity as MainActivity).user
+        ownUser = user
+    }
+
+    private fun showcustomDialog(userString:String,postString:String){
+        mprogressDialog= CustomBottomSheetDialogFragment().newInstance(userString,postString)
+        val fragmentManager = activity?.supportFragmentManager
+        mprogressDialog!!.isCancelable = true
+        mprogressDialog!!.show(fragmentManager!!,"fragment_progress_dialog")
+
+    }
+
+    private fun closeCustomDialog(){
+        if(mprogressDialog != null){
+            mprogressDialog!!.dismiss()
+        }
     }
 
 }

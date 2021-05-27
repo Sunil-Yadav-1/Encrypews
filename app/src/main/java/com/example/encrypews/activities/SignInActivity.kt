@@ -11,18 +11,29 @@ import android.text.TextPaint
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.example.encrypews.R
+import com.example.encrypews.Utils.Constants
 import com.example.encrypews.databinding.ActivitySignInBinding
 import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.firebase.MyFireBaseDatabase
+import com.example.encrypews.firebase.MyFirebaseMessagingService
+import com.example.encrypews.models.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
@@ -58,9 +69,19 @@ class SignInActivity : AppCompatActivity() {
             MyFireBaseAuth.auth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener{task ->
                     if(task.isSuccessful){
-                        binding.btnSignIn.revertAnimation()
-                        startActivity(Intent(this@SignInActivity,MainActivity::class.java))
-                        finish()
+                        getTokenandUpdate()
+                        lifecycleScope.launch(Dispatchers.IO){
+                            val user = MyFireBaseDatabase().loadUser()
+
+                            withContext(Dispatchers.Main){
+                                putInSharedPref(user)
+                                binding.btnSignIn.revertAnimation()
+                                startActivity(Intent(this@SignInActivity,MainActivity::class.java))
+                                finish()
+                            }
+                        }
+
+
                     }else{
                         binding.btnSignIn.revertAnimation()
                         showSnackBar("Error  ${task.exception!!.message.toString()}")
@@ -161,4 +182,45 @@ class SignInActivity : AppCompatActivity() {
             R.color.snackbar_error_color))
         snackbar.show()
     }
+
+    private fun putInSharedPref(user: User){
+        val spref = getSharedPreferences(Constants.SHARED_PREFERENCE_USER, MODE_PRIVATE)
+        val gson = Gson()
+        val json = gson.toJson(user)
+        spref.edit().apply{
+            putString(Constants.SP_USER,json)
+        }.apply()
+
+    }
+    private fun getTokenandUpdate() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("getToken", "Failed")
+                return@addOnCompleteListener
+            }
+            val token = task.result
+            val sharedPreferences = getSharedPreferences(
+                Constants.SHARED_PREFERENCE_USER,
+                MODE_PRIVATE
+            )
+            val editor = sharedPreferences.edit()
+            editor.putString(Constants.SP_TOKEN, token)
+            editor.apply()
+            editor.commit()
+
+            val ref = Firebase.database.reference.child(Constants.USERS)
+            ref.child(MyFireBaseAuth.getUserId()).child("deviceToken").setValue(token)
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.e("tokenUpdate", "failedSignup")
+                        return@addOnCompleteListener
+                    }
+                    Log.d("tokenUpdate", "Success")
+
+                }
+
+        }
+    }
+
+
 }

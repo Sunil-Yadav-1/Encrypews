@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="@dimen/eight_dp_padding">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_inbox"
+        android:layout_width="@dimen/fifty_dp_civ"
+        android:layout_height="@dimen/fifty_dp_civ"
+        android:src="@drawable/usr_image_place_holder"
+        app:civ_border_color="@color/black"
+        android:layout_marginStart="@dimen/eight_dp_margin"
+        app:civ_border_width="@dimen/border_width_comment"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/ll_margin_start_inbox"
+        android:layout_marginEnd="@dimen/ll_margin_end_inbox"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_inbox_user_name"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/tv_size_eighteen_sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                tools:text="Sunil Yadav"
+                android:lines="1"/>
+            <TextView
+                android:id="@+id/tv_inbox_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textSize="@dimen/tv_size_fouteen_sp"
+                android:textColor="@color/lightblack"
+                tools:text="6/1/19"
+                android:lines="1"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_inbox_last_chat"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/tv_size_sixteen_sp"
+
+                android:textColor="@color/lightblack"
+                tools:text="Sunil Yadav"
+                android:lines="1"/>
+            <TextView
+                android:id="@+id/tv_inbox_unread_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/tv_size_fouteen_sp"
+                android:textStyle="bold"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:background="@drawable/unread_msg_drawable"
+                tools:text="6"
+                android:lines="1"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.Utils.Constants
 import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.firebase.MyFireBaseDatabase
 import com.example.encrypews.models.Post
@@ -18,7 +18,7 @@ import com.google.firebase.ktx.Firebase
 
 class ProfileFragmentViewModel: ViewModel() {
 
-   private  var _user = MutableLiveData<User>()
+    var _user = MutableLiveData<User>()
     val user : LiveData<User>get() = _user
 
     private var _posts = MutableLiveData<List<Post>>()

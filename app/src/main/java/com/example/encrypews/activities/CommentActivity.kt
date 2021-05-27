@@ -1,6 +1,5 @@
 package com.example.encrypews.activities
 
-import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,12 +8,11 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.encrypews.R
 import com.example.encrypews.adapters.CommentRVAdapter
-import com.example.encrypews.constants.Constants
+import com.example.encrypews.Utils.Constants
 import com.example.encrypews.databinding.ActivityCommentBinding
 import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.models.Comment
@@ -22,7 +20,6 @@ import com.example.encrypews.models.Post
 import com.example.encrypews.viewmodels.CommentActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,8 +36,12 @@ class CommentActivity : AppCompatActivity() {
         }
         binding = ActivityCommentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(CommentActivityViewModel::class.java)
-        adapter = CommentRVAdapter()
+        adapter = CommentRVAdapter(this)
         binding.rvComments.layoutManager = LinearLayoutManager(this)
+        binding.rvComments.hasFixedSize()
+        binding.rvComments.setItemViewCacheSize(20)
+        binding.rvComments.isDrawingCacheEnabled = true
+        binding.rvComments.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.rvComments.adapter = adapter
         setUpActionBar()
         setContentView(binding.root)
@@ -49,7 +50,9 @@ class CommentActivity : AppCompatActivity() {
         }
 
         viewModel.user.observe(this, Observer {
-            Picasso.get().load(it.userImage).into(binding.civComment)
+            if(it.userImage !=""){
+                Picasso.get().load(it.userImage).placeholder(R.color.grey).into(binding.civComment)
+            }
         })
 
 

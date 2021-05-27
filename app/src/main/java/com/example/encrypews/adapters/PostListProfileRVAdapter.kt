@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.encrypews.R
 import com.example.encrypews.databinding.PostsListItemBinding
 import com.example.encrypews.models.Post
 import com.squareup.picasso.Picasso
@@ -25,7 +26,7 @@ class PostListProfileRVAdapter : RecyclerView.Adapter<PostListProfileRVAdapter.M
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)= with(holder) {
         val post = posts[position]
-        Picasso.get().load(post.imageUrl).into(binding.ivPostProfile)
+        Picasso.get().load(post.imageUrl).placeholder(R.color.offWhite).into(binding.ivPostProfile)
 
     }
 

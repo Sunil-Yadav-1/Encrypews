@@ -37,4 +37,8 @@ class HomeFragmentViewModel: ViewModel() {
     fun unlikePost(postId:String){
         MyFireBaseDatabase().unlikePost(postId)
     }
+
+  suspend  fun loadUser():User{
+        return MyFireBaseDatabase().loadUser()
+    }
 }

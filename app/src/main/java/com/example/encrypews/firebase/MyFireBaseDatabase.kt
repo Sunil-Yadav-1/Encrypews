@@ -3,10 +3,11 @@ package com.example.encrypews.firebase
 import android.util.Log
 import com.example.encrypews.activities.EditProfileActivity
 import com.example.encrypews.activities.SignUpActivity
-import com.example.encrypews.constants.Constants
-import com.example.encrypews.models.Comment
-import com.example.encrypews.models.Post
-import com.example.encrypews.models.User
+import com.example.encrypews.Utils.Constants
+import com.example.encrypews.models.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -34,19 +35,20 @@ class MyFireBaseDatabase {
 
     suspend fun loadUser(id:String = MyFireBaseAuth.getUserId()) : User{
 
-        try{
+        return try{
             val dataSnapshot= dbRef.child(Constants.USERS).child(id).get().await()
             Log.d("data fetched","$dataSnapshot")
 
             val data = dataSnapshot.getValue(User::class.java)
             if(data != null){
-                return data
+
+                data
             }else{
-                return User()
+                User()
             }
         }catch (e : Exception){
             Log.e("Error load user",e.message.toString())
-            return User()
+            User()
         }
 
     }
@@ -167,7 +169,7 @@ class MyFireBaseDatabase {
            return list
        }catch (e:Exception){
            Log.e("getFollowers",e.message.toString())
-           return ArrayList<String>()
+           return ArrayList()
        }
     }
     suspend fun getFollowing(id:String): List<String>{
@@ -231,6 +233,72 @@ class MyFireBaseDatabase {
 //        return  snapshot.children.count()
 //    }
 
+// Chat messaging functions
 
+     fun sendMessage(message:Messages,friendUser:User,currentUser: User){
+         val friendId = friendUser.id
+        val mref = dbRef.child(Constants.MESSAGES).child(getMsgId(friendId))
+        message.senderId = MyFireBaseAuth.getUserId()
+        val key = mref.push().key
+        if(key != null){
+            message.msgId = key
+           mref.child(key).setValue(message).addOnSuccessListener {
+               updateLastMessage(message,friendUser,currentUser)
+           }.addOnFailureListener{exception ->
+               Log.e("sendMessageFBRD",exception.localizedMessage!!)
+           }
+
+        }
+    }
+
+    private fun updateLastMessage(message:Messages,friendUser: User,currentUser: User){
+        val friendId = friendUser.id
+        val inbox =  Inbox(message.msg,friendId,friendUser.name,friendUser.userName,friendUser.userImage,chatOpen = true)
+        val chatRef1 = dbRef.child(Constants.CHATS).child(MyFireBaseAuth.getUserId()).child(friendId)
+        val chatRef2 = dbRef.child(Constants.CHATS).child(friendId).child(MyFireBaseAuth.getUserId())
+
+        chatRef1.setValue(inbox).addOnSuccessListener {
+            chatRef2.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val value = snapshot.getValue(Inbox::class.java)
+                    Log.e("value","$value")
+                    inbox.apply {
+                        from = currentUser.id
+                        name= currentUser.name
+                        userName = currentUser.userName
+                        imageUrl = currentUser.userImage
+                        count = 1
+                        chatOpen = false
+                    }
+                    value?.let {
+                        if(it.from == message.senderId){
+                            inbox.count = value.count+1
+                        }
+                        inbox.chatOpen = value.chatOpen
+                    }
+
+                    chatRef2.setValue(inbox)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("updtLstMsg",error.message)
+                }
+
+
+            })
+        }
+
+    }
+
+
+
+    private fun getMsgId(friendId: String):String{
+        val currentId = MyFireBaseAuth.getUserId()
+        if(currentId > friendId){
+            return friendId+currentId
+        }else{
+            return currentId+friendId
+        }
+    }
 
 }

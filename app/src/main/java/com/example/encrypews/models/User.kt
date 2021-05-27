@@ -10,6 +10,7 @@ data class User(
     var userImage : String = "",
     var userBio : String = "",
     var email:String="",
+    var deviceToken:String = ""
     ) : Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -18,7 +19,7 @@ data class User(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-
+        parcel.readString()!!
 
     ) {
     }
@@ -34,7 +35,7 @@ data class User(
         dest.writeString(userImage)
         dest.writeString(userBio)
         dest.writeString(email)
-
+        dest.writeString(deviceToken)
     }
 
     companion object CREATOR : Parcelable.Creator<User> {

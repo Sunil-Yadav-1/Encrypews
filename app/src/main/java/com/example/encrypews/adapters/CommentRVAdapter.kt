@@ -1,8 +1,11 @@
 package com.example.encrypews.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.encrypews.R
 import com.example.encrypews.databinding.ActivityCommentBinding
 import com.example.encrypews.databinding.CommentListBinding
 import com.example.encrypews.firebase.MyFireBaseDatabase
@@ -13,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CommentRVAdapter() : RecyclerView.Adapter<CommentRVAdapter.MyViewHolder>(){
+class CommentRVAdapter(val context:Context) : RecyclerView.Adapter<CommentRVAdapter.MyViewHolder>(){
     var listComments = ArrayList<Comment>()
     inner class MyViewHolder(val binding: CommentListBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -28,7 +31,11 @@ class CommentRVAdapter() : RecyclerView.Adapter<CommentRVAdapter.MyViewHolder>()
             val user = MyFireBaseDatabase().loadUser(comment.publishedBy)
             withContext(Dispatchers.Main){
                 binding.tvUserNameList.text = user.userName
-                Picasso.get().load(user.userImage).into(binding.civList)
+                if(user.userImage != ""){
+                    Picasso.get().load(user.userImage).placeholder(R.drawable.usr_image_place_holder).into(binding.civList)
+                }else{
+                    binding.civList.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.usr_image_place_holder))
+                }
             }
         }
 
