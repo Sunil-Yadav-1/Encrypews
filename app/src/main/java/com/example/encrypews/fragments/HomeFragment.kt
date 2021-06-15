@@ -1,7 +1,6 @@
 package com.example.encrypews.fragments
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.encrypews.R
 import com.example.encrypews.Utils.Constants
@@ -23,7 +22,6 @@ import com.example.encrypews.activities.InboxActivity
 import com.example.encrypews.activities.MainActivity
 import com.example.encrypews.adapters.HomePageRVAdapter
 import com.example.encrypews.customdialogs.CustomBottomSheetDialogFragment
-import com.example.encrypews.customdialogs.CustomDialogFragment
 import com.example.encrypews.databinding.FragmentHomeBinding
 import com.example.encrypews.models.Post
 import com.example.encrypews.models.User
@@ -64,8 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.rvHome.layoutManager = LinearLayoutManager(activity)
         binding.rvHome.hasFixedSize()
         binding.rvHome.setItemViewCacheSize(20)
-        binding.rvHome.isDrawingCacheEnabled = true
-        binding.rvHome.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+
 
         getOwnUser()
 
@@ -87,8 +84,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
 
-            override fun onclickPublisher(post: Post,user: User) {//for now opens the chat activity
-                makeToast("Publisher Clicked")
+            override fun onclickPublisher(post: Post,user: User) {
+               // val otherUserFragment = OtherUserFragment()
+                val bundle =Bundle()
+                val list = ArrayList<String>()
+                list.add(user!!.id)
+                list.add(user!!.userName)
+                bundle.putStringArrayList("Bndl",list)
+//              otherUserFragment.arguments = bundle
+                findNavController().navigate(R.id.action_homeFragment_to_otherUserFragment,bundle)
             }
 
             override fun onclickMessage(post: Post,user:User) {
@@ -101,6 +105,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 showcustomDialog(userString,postString)
             }
 
+            override fun onclickSave(post: Post,boolean: Boolean) {
+                if(boolean){
+                    viewModel.savePost(post)
+                }else{
+                    viewModel.unSavePost(post)
+                }
+
+            }
+
         })
         binding.rvHome.adapter = adapter
         binding.srvHome.setOnRefreshListener {
@@ -110,8 +123,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
        getPostsUser()
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { list->
-            adapter.list = list as ArrayList<Post>
-            adapter.notifyDataSetChanged()
+//            adapter.list = list as ArrayList<Post>
+//            adapter.notifyDataSetChanged()
+            binding.llProgressBarHome.visibility = View.GONE
+            if(list.isEmpty()){
+                Log.d("listempty","emptyList")
+                binding.includeLayoutNoPost.llNoPost.visibility = View.VISIBLE
+                binding.rvHome.visibility =View.GONE
+            }else{
+                Log.d("listempty","notemptyList")
+                binding.rvHome.visibility = View.VISIBLE
+                binding.includeLayoutNoPost.llNoPost.visibility = View.GONE
+            }
+            adapter.differ.submitList(list.reversed())
             if(binding.srvHome.isRefreshing){
                 binding.srvHome.isRefreshing = false
             }
@@ -223,7 +247,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mprogressDialog= CustomBottomSheetDialogFragment().newInstance(userString,postString)
         val fragmentManager = activity?.supportFragmentManager
         mprogressDialog!!.isCancelable = true
-        mprogressDialog!!.show(fragmentManager!!,"fragment_progress_dialog")
+        mprogressDialog!!.show(fragmentManager!!,"fragment_bottom_sheet_dialog")
 
     }
 

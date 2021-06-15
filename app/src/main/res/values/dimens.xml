@@ -105,4 +105,10 @@
     <dimen name="eight_dp">8dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="four_dp">4dp</dimen>
+    <dimen name="thirty_six_dp">36dp</dimen>
+    <dimen name="thirty_dp">30dp</dimen>
+    <dimen name="one_sixty_dp">160dp</dimen>
+    <dimen name="ninty_dp">90dp</dimen>
+    <dimen name="fifteen_sp">15sp</dimen>
+    <dimen name="thirty_sp">30sp</dimen>
 </resources>

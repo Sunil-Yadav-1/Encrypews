@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/flmain"
         app:labelVisibilityMode="unlabeled"
+        app:itemIconSize="@dimen/thirty_dp"
         app:itemIconTint="@drawable/tab_color_selector"
         app:menu="@menu/bottom_nav_menu" />
 

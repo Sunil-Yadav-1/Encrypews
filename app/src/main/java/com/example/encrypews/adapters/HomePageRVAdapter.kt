@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.encrypews.R
 import com.example.encrypews.Utils.Constants
@@ -40,7 +42,8 @@ class HomePageRVAdapter(private val context:Context)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) = with(holder) {
-        val post = list[position]
+//        val post = list[position]
+        val post = differ.currentList[position]
         val postid= post.postId
         Log.e("position","$position")
 
@@ -50,6 +53,28 @@ class HomePageRVAdapter(private val context:Context)
 
         val commentRef = ref.child(Constants.COMMENTS).child(postid)
 
+        val saveRef = ref.child(Constants.SAVED_POSTS).child(MyFireBaseAuth.getUserId()).child(postid)
+
+        saveRef.addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    binding.ibSavePostHome.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_saved))
+                    binding.ibSavePostHome.tag ="saved"
+                }else{
+                    binding.ibSavePostHome.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_save_alt_24))
+                    binding.ibSavePostHome.tag ="not_saved"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("SavePostError",error.message)
+            }
+
+        })
+
+
+
+
         likeRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.e("snapshot","${snapshot.children.count()}")
@@ -58,7 +83,8 @@ class HomePageRVAdapter(private val context:Context)
                     binding.ibLikePostHome.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.heart_like))
                     binding.ibLikePostHome.tag ="liked"
                 }else{
-                    binding.ibLikePostHome.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_border_24))
+                    binding.ibLikePostHome.setImageDrawable(ContextCompat.getDrawable
+                        (context,R.drawable.ic_baseline_favorite_border_26))
                     binding.ibLikePostHome.tag ="like"
                 }
             }
@@ -110,6 +136,15 @@ class HomePageRVAdapter(private val context:Context)
                 }
 
             }
+
+            binding.ibSavePostHome.setOnClickListener{
+                if(it.tag =="saved"){
+                    onClickListener!!.onclickSave(post,false)
+                }else{
+                    onClickListener!!.onclickSave(post,true)
+                }
+            }
+
             binding.ibCommentPostHome.setOnClickListener{
                 onClickListener!!.onclickComment(post)
             }
@@ -120,6 +155,9 @@ class HomePageRVAdapter(private val context:Context)
                 onClickListener!!.onclickMessage(post,user)
             }
             binding.usrImgPost.setOnClickListener{
+                onClickListener!!.onclickPublisher(post,user)
+            }
+            binding.tvUsrIdPost.setOnClickListener{
                 onClickListener!!.onclickPublisher(post,user)
             }
 
@@ -153,7 +191,8 @@ class HomePageRVAdapter(private val context:Context)
     }
 
     override fun getItemCount(): Int {
-        return list.size
+//        return list.size
+        return differ.currentList.size
     }
 
 
@@ -164,11 +203,26 @@ class HomePageRVAdapter(private val context:Context)
         fun onclickPublisher(post:Post,user: User)
         fun onclickMessage(post:Post,user:User)
         fun onclickMore(post: Post,user: User)
+        fun onclickSave(post:Post,boolean: Boolean)
     }
 
     fun setOnClickListener(listener:ONCLICK){
         this.onClickListener = listener
     }
+
+    private val differCallback = object : DiffUtil.ItemCallback<Post>(){
+        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+           return oldItem.postId == newItem.postId
+        }
+
+        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem== newItem
+        }
+
+
+    }
+
+    val differ = AsyncListDiffer(this,differCallback)
 
 
 

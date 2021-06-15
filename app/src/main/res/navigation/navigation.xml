@@ -9,7 +9,15 @@
         android:id="@+id/homeFragment"
         android:name="com.example.encrypews.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_otherUserFragment"
+            app:destination="@id/otherUserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
@@ -19,7 +27,12 @@
 
         <action
             android:id="@+id/action_searchFragment_to_otherUserFragment"
-            app:destination="@id/otherUserFragment" />
+            app:destination="@id/otherUserFragment"
+            app:popUpTo="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -41,6 +54,13 @@
         android:label="ActivityFragment"
         tools:layout="@layout/fragment_activity">
 
+        <action
+            android:id="@+id/action_activityFragment_to_articleFragment"
+            app:destination="@id/articleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/otherUserFragment"
@@ -57,6 +77,32 @@
         app:exitAnim="@anim/slide_in_right"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/breakingNewsFragment"
+        android:name="com.example.encrypews.fragments.BreakingNewsFragment"
+        android:label="BreakingNewsFragment" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/searchNewsFragment"
+        android:name="com.example.encrypews.fragments.SearchNewsFragment"
+        android:label="SearchNewsFragment" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/savedNewsFragment"
+        android:name="com.example.encrypews.fragments.SavedNewsFragment"
+        android:label="SavedNewsFragment" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.example.encrypews.fragments.ArticleFragment"
+        android:label="ArticleFragment">
+        <argument
+            android:name="article"
+            app:argType="com.example.encrypews.models.Article" />
+    </fragment>
 
 
 </navigation>

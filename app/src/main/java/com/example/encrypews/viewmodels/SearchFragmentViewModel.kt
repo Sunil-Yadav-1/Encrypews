@@ -26,7 +26,7 @@ class SearchFragmentViewModel : ViewModel() {
 
              query.addValueEventListener(object : ValueEventListener{
                  override fun onDataChange(snapshot: DataSnapshot) {
-                     Log.d("snapshot","${snapshot}")
+                     Log.d("snapshotUserSearch","${snapshot}")
                      val mUsers  = ArrayList<User>()
                      for(dsnapshot in snapshot.children){
                          val user = dsnapshot.getValue(User:: class.java)
@@ -38,7 +38,7 @@ class SearchFragmentViewModel : ViewModel() {
                  }
 
                  override fun onCancelled(error: DatabaseError) {
-                     Log.d("Error SFVM","${error.message}")
+                     Log.d("Error SFVM", error.message)
                  }
 
              })

@@ -1,8 +1,10 @@
 package com.example.encrypews.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -15,6 +17,10 @@ import com.example.encrypews.adapters.UserSearchRvAdapter
 import com.example.encrypews.databinding.FragmentSearchBinding
 import com.example.encrypews.models.User
 import com.example.encrypews.viewmodels.SearchFragmentViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -33,7 +39,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val otherUserFragment = OtherUserFragment()
+
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         setupActionBar()
         viewModel = ViewModelProvider(this).get(SearchFragmentViewModel::class.java)
@@ -44,15 +50,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         adapter.setOnClickListener(object : UserSearchRvAdapter.onClicklistener{
 
-            override fun onClickRv(position: Int) {
-                val user = viewModel.listUsers.value?.get(position)
-                var bundle =Bundle()
+            override fun onClickRv(userClicked: User) {
+                val user = userClicked
+                val bundle =Bundle()
                 val list = ArrayList<String>()
-                list.add(user!!.id)
-                list.add(user!!.userName)
+                list.add(user.id)
+                list.add(user.userName)
                 bundle.putStringArrayList("Bndl",list)
-                otherUserFragment.arguments = bundle
-                findNavController().navigate(R.id.otherUserFragment,bundle)
+//                otherUserFragment.arguments = bundle
+//                KeyBoardVisibilityUtil(binding.root,onKeyBoardShown).visibilityListener
+                hideKeyBoard()
+                findNavController().navigate(R.id.action_searchFragment_to_otherUserFragment,bundle)
             }
 
 
@@ -60,8 +68,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.rvSearchFragment.adapter = adapter
 
         viewModel.listUsers.observe(viewLifecycleOwner, Observer{ list ->
-            adapter.listUsers = list as ArrayList<User>
-            adapter.notifyDataSetChanged()
+//            adapter.listUsers = list as ArrayList<User>
+//            adapter.notifyDataSetChanged()
+            adapter.differ.submitList(list)
 
         })
 
@@ -76,6 +85,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val searchItem = menu.findItem(R.id.search_bar_menu)
         val searchView = searchItem.actionView  as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            var job:Job? = null
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 if (query != null) {
@@ -86,7 +96,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    viewModel.searchUser(newText)
+                    job?.cancel()
+                    job = MainScope().launch {
+                        delay(500L)
+                        viewModel.searchUser(newText)
+                    }
+
                 }
                 return true
             }
@@ -106,6 +121,26 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
     }
+
+//    val onKeyBoardShown: (Boolean)->Unit = { bool:Boolean ->
+//        if(bool){
+//            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
+//        }
+//    }
+
+    private fun hideKeyBoard(){
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        // Check if no view has focus
+        val currentFocusedView = activity?.currentFocus
+        currentFocusedView?.let {
+            inputMethodManager.hideSoftInputFromWindow(
+                currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
 
 
 }

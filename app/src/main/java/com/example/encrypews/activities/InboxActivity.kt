@@ -51,8 +51,8 @@ class InboxActivity : AppCompatActivity() {
                 binding.llPbar.visibility = View.GONE
                 binding.rvInbox.visibility=View.VISIBLE
                 if(inboxList.isNotEmpty()){
-                    inboxList.sortWith(compareBy<Inbox>{it.time.time})
-                    finalList = inboxList.reversed()
+//                    inboxList.sortWith(compareBy<Inbox>{it.time.time})
+                    finalList =  sortInboxList(inboxList)// inboxList.reversed()
                     adapter.list = finalList
                     adapter.notifyDataSetChanged()
 
@@ -85,15 +85,15 @@ class InboxActivity : AppCompatActivity() {
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                //do nothing
             }
         })
 
@@ -125,7 +125,7 @@ class InboxActivity : AppCompatActivity() {
 
     private fun addInbox(inbox:Inbox){
         inboxList.add(inbox)
-        finalList = inboxList.reversed()
+        finalList = sortInboxList(inboxList)//inboxList.reversed()
         adapter.list =finalList
         adapter.notifyDataSetChanged()
         Log.d("datasetchanged","$finalList")
@@ -141,7 +141,8 @@ class InboxActivity : AppCompatActivity() {
         Log.d("inbox Element","$inbox")
         inboxList.remove(element)
         inboxList.add(inbox)
-        finalList = inboxList.reversed()
+
+        finalList =   sortInboxList(inboxList)    //inboxList.reversed()
         adapter.list = finalList
         adapter.notifyDataSetChanged()
         Log.e("finalListRpl","{$finalList}")
@@ -154,6 +155,12 @@ class InboxActivity : AppCompatActivity() {
         val json = Gson().toJson(inboxItem.time)
         intent.putExtra(Constants.INBOX_TIME,json)
         startActivity(intent)
+    }
+
+    private fun sortInboxList(inboxList: MutableList<Inbox>): List<Inbox> {
+//        return inboxList.sortedWith(compareBy<Inbox> { it.time.year }.thenBy { it.time.month }
+//            .thenBy { it.time.day })
+        return inboxList.sortedWith(compareBy<Inbox>{it.time.time}).reversed()
     }
 
 

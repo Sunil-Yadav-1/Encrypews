@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        tools:visibility="gone">
+        tools:visibility="visible">
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -168,10 +168,10 @@
 
 
 
+
             </LinearLayout>
 
         </ScrollView>
-
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/tab_layout_margin_top"
@@ -187,6 +187,8 @@
             android:layout_below="@id/tab_layout"
 
             android:id="@+id/pager"/>
+
+
     </RelativeLayout>
 
     <LinearLayout

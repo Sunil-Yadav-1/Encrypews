@@ -1,6 +1,8 @@
 package com.example.encrypews.Utils
 
 object Constants {
+    const val QUERY_PAGE_SIZE =20
+
     const val INBOX_MESSAGE = "inbox_message"
     const val INBOX_TIME= "inbox_time"
     const val NOTIFICATION_CHANNEL_ID ="com.example.encrypews"
@@ -35,7 +37,7 @@ object Constants {
 
     const val LIKES= "Likes"
     const val COMMENTS = "Comments"
-
+    const val SAVED_POSTS = "Saved"
 
     const val POSTEXTRA ="PostExtra"
 
@@ -51,7 +53,7 @@ object Constants {
 
     const val COUNT = "count"
 
-
+    const val BASE_URL_NEWS= "https://newsapi.org"
 
 
 

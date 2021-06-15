@@ -41,4 +41,15 @@ class HomeFragmentViewModel: ViewModel() {
   suspend  fun loadUser():User{
         return MyFireBaseDatabase().loadUser()
     }
+
+    suspend fun unFollowUser(userId:String){
+        MyFireBaseDatabase().UnfollowUser(userId)
+    }
+
+    fun savePost(post:Post){
+        MyFireBaseDatabase().savePost(post)
+    }
+    fun unSavePost(post:Post){
+        MyFireBaseDatabase().unSavePost(post.postId)
+    }
 }

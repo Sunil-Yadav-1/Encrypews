@@ -1,22 +1,17 @@
 package com.example.encrypews.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.encrypews.adapters.PostListProfileRVAdapter
 import com.example.encrypews.databinding.FragmentPostsListBinding
 import com.example.encrypews.models.Post
 import com.example.encrypews.viewmodels.ProfileFragmentViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val ARG_OBJECT ="object"
 class   PostsListFragment : Fragment() {
@@ -40,8 +35,7 @@ class   PostsListFragment : Fragment() {
         binding.rvPostListFragment.layoutManager = GridLayoutManager(activity,3)
         binding.rvPostListFragment.hasFixedSize()
         binding.rvPostListFragment.setItemViewCacheSize(20)
-        binding.rvPostListFragment.isDrawingCacheEnabled = true
-        binding.rvPostListFragment.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+
 
         binding.rvPostListFragment.adapter = adapter
 
@@ -58,10 +52,19 @@ class   PostsListFragment : Fragment() {
 //          adapter.posts = viewModel.posts as ArrayList<Post>
 //            adapter.notifyDataSetChanged()
 //        })
-        viewModel.posts.observe(viewLifecycleOwner, Observer {list->
-            adapter.posts = list as ArrayList<Post>
-            adapter.notifyDataSetChanged()
-        })
+        if(arguments?.getInt("object") == 1 ){
+            viewModel.postsOwnUser.observe(viewLifecycleOwner, Observer { list->
+//                adapter.posts = list as ArrayList<Post>
+//                adapter.notifyDataSetChanged()
+                adapter.differ.submitList(list.reversed())
+            })
+        }else{
+            viewModel.postsSaved.observe(viewLifecycleOwner, Observer { list->
+//                adapter.posts = list as ArrayList<Post>
+//                adapter.notifyDataSetChanged()
+                adapter.differ.submitList(list.reversed())
+            })
+        }
     }
 
 }

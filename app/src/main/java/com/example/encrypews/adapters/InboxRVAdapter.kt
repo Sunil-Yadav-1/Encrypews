@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.encrypews.R
 import com.example.encrypews.Utils.Constants
@@ -144,4 +145,6 @@ class InboxRVAdapter(private val context: Context, var list:List<Inbox>, private
 
         })
     }
+
+
 }

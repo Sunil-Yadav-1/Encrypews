@@ -233,6 +233,16 @@ class MyFireBaseDatabase {
 //        return  snapshot.children.count()
 //    }
 
+    //save post
+    fun savePost(posttoSave:Post){
+        dbRef.child(Constants.SAVED_POSTS).child(MyFireBaseAuth.getUserId()).child(posttoSave.postId).setValue(posttoSave)
+    }
+
+    fun unSavePost(postId: String){
+        dbRef.child(Constants.SAVED_POSTS).child(MyFireBaseAuth.getUserId()).child(postId).removeValue()
+    }
+
+
 // Chat messaging functions
 
      fun sendMessage(message:Messages,friendUser:User,currentUser: User){

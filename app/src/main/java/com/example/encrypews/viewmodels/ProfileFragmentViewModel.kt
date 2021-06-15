@@ -9,6 +9,7 @@ import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.firebase.MyFireBaseDatabase
 import com.example.encrypews.models.Post
 import com.example.encrypews.models.User
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -21,8 +22,11 @@ class ProfileFragmentViewModel: ViewModel() {
     var _user = MutableLiveData<User>()
     val user : LiveData<User>get() = _user
 
-    private var _posts = MutableLiveData<List<Post>>()
-    val posts : LiveData<List<Post>> get() = _posts
+    private var _postsOwnUser = MutableLiveData<List<Post>>()
+    val postsOwnUser : LiveData<List<Post>> get() = _postsOwnUser
+
+    private var _postsSaved = MutableLiveData<List<Post>>()
+    val postsSaved : LiveData<List<Post>> get() = _postsSaved
 
 //     var _postCount =MutableLiveData<Int>()
 //    val postCount :LiveData<Int> get() = _postCount
@@ -58,6 +62,8 @@ class ProfileFragmentViewModel: ViewModel() {
             .getUserId()).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 _user.postValue(snapshot.getValue(User :: class.java))
+
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -72,6 +78,7 @@ class ProfileFragmentViewModel: ViewModel() {
         val ref1 = dbref.child(Constants.FOLLOWING)
         val ref2 = dbref.child(Constants.FOLLOWERS)
         val ref3 = Firebase.database.reference.child(Constants.POSTS).child(id)
+        val ref4 = Firebase.database.reference.child(Constants.SAVED_POSTS).child(MyFireBaseAuth.getUserId())
 
         ref1.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -114,18 +121,39 @@ class ProfileFragmentViewModel: ViewModel() {
         ref3.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("posts snapshot","$snapshot")
-                var list = ArrayList<Post>()
+                val list = ArrayList<Post>()
                 for(ds in snapshot.children){
                     val post = ds.getValue(Post::class.java)
                     if(post != null){
                         list.add(post)
                     }
                 }
-                _posts.value =list
+                _postsOwnUser.value =list
+
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.d("errPstsDb",error.message)
+            }
+
+        })
+
+        ref4.addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("posts saved snpsht","$snapshot")
+                val list = ArrayList<Post>()
+                for(ds in snapshot.children){
+                    val post = ds.getValue(Post::class.java)
+                    if(post != null){
+                        list.add(post)
+                    }
+                }
+                _postsSaved.value = list
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("errPstsSavedDb",error.message)
             }
 
         })

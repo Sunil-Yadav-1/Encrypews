@@ -11,15 +11,18 @@ class ProfilePostFragmentAdapter(fragment: Fragment,private val boolean: Boolean
 
      override fun createFragment(position: Int): Fragment {
          val fragment1 = PostsListFragment()
-         val fragment2 = OtherPostListFragment()
+         val fragment2 = PostsListFragment()
+         val fragmentOtherUser = OtherPostListFragment()
          fragment1.arguments  = Bundle().apply {
              putInt("object",position+1)
          }
-         fragment2.arguments  = Bundle().apply {
+         fragmentOtherUser.arguments  = Bundle().apply {
              putInt("object",position+1)
          }
-         return if(boolean){
+         return if(position ==0&&boolean){
              fragment1
+         }else if(position==0 && !boolean){
+             fragmentOtherUser
          }else{
              fragment2
          }

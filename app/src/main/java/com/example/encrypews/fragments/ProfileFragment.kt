@@ -1,6 +1,5 @@
 package com.example.encrypews.fragments
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.encrypews.R
 import com.example.encrypews.activities.EditProfileActivity
 import com.example.encrypews.activities.SignInActivity
@@ -20,15 +18,12 @@ import com.example.encrypews.Utils.Constants
 import com.example.encrypews.activities.MainActivity
 import com.example.encrypews.customdialogs.CustomDialogFragment
 import com.example.encrypews.databinding.FragmentProfileBinding
-import com.example.encrypews.databinding.ProgressDialogBinding
 import com.example.encrypews.firebase.MyFireBaseAuth
 import com.example.encrypews.viewmodels.ProfileFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -38,7 +33,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var mprogressDialog: CustomDialogFragment?= null
 
-    private lateinit var profilePostFragmentAdapter: ProfilePostFragmentAdapter
+//    private lateinit var profilePostFragmentAdapter: ProfilePostFragmentAdapter
     private lateinit var actionBar : ActionBar
     private lateinit var viewModel : ProfileFragmentViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +67,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 //            binding.tvPostsCount.text = viewModel.postCount.value.toString()
 //        })
 
-        viewModel.posts.observe(viewLifecycleOwner, Observer { list ->
+        viewModel.postsOwnUser.observe(viewLifecycleOwner, Observer { list ->
             binding.tvPostsCount.text = list.size.toString()
         })
 
@@ -89,6 +84,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewModel.user.observe(viewLifecycleOwner, Observer { user->
           if(user != null){
+              if(activity is MainActivity){
+                  (activity as MainActivity).putUserInSp(user)
+              }
               binding.tvUserName.text = user.name
               binding.tvUserBio.text = user.userBio
               actionBar.setTitle(user.userName)
@@ -110,10 +108,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val items = listOf<Int>(R.drawable.ic_baseline_grid_on_24,R.drawable.reels_vector_asset,
             R.drawable.tag_vector_asset)
 
-
-        profilePostFragmentAdapter = ProfilePostFragmentAdapter(this,true)
+        val profilePostFragmentAdapter =
+            ProfilePostFragmentAdapter(this,true)
         binding.pager.adapter = profilePostFragmentAdapter
-        binding.pager.isSaveEnabled = false
+       // binding.pager.isSaveEnabled = false
 
 
         TabLayoutMediator(binding.tabLayout,binding.pager){tab,position->

@@ -1,6 +1,5 @@
-package com.example.encrypews.adapters
+package com.example.encrypews.viewmodelfactory
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.encrypews.models.User

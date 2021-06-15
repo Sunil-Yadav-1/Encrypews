@@ -59,8 +59,9 @@ class OtherPostListFragment : Fragment() {
 //        })
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { list->
-            adapter.posts = list as ArrayList<Post>
-            adapter.notifyDataSetChanged()
+//            adapter.posts = list as ArrayList<Post>
+//            adapter.notifyDataSetChanged()
+            adapter.differ.submitList(list)
         })
     }
 

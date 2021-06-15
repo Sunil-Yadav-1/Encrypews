@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
 }
 def apikeyPropertiesFile = rootProject.file("apiKeypassword.properties")
 def apikeyProperties = new Properties()
@@ -23,6 +25,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "KEY_FOR_ENCRYPTION", apikeyProperties['KEY_FOR_ENCRYPTION'])
+        buildConfigField("String","NEWS_API_KEY",apikeyProperties['NEWS_API_KEY'])
     }
 
     buildTypes {
@@ -46,6 +49,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.5.0'
@@ -93,6 +97,17 @@ dependencies {
     implementation 'com.vanniktech:emoji-google:0.7.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
+
+    // Room
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+
+    // Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:2.3.0"
 
 
 }

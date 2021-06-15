@@ -84,6 +84,7 @@ class OtherUserFragment : Fragment() {
 //        })
         viewModel.posts.observe(viewLifecycleOwner, Observer { list->
             binding.tvPostsCount.text = list.size.toString()
+
         })
 
         viewModel.isfollowed.observe(viewLifecycleOwner, Observer { bool->

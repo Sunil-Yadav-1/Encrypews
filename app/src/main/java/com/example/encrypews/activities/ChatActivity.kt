@@ -13,16 +13,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.encrypews.R
 import com.example.encrypews.Utils.Constants
 import com.example.encrypews.Utils.isSameDay
 import com.example.encrypews.adapters.ChatActivityRVAdapter
-import com.example.encrypews.adapters.ChatViewModelFactory
+import com.example.encrypews.viewmodelfactory.ChatViewModelFactory
 import com.example.encrypews.databinding.ActivityChatBinding
 import com.example.encrypews.encryption.EncryptionDecryption
 import com.example.encrypews.firebase.MyFireBaseAuth
@@ -75,11 +73,10 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    private val friendUser by lazy {
-         intent.getParcelableExtra<User>(Constants.FRIEND_USER) //dont use user image and bio as when loaded through inbox activity
-        //we dont have that info so it will be null here
+    private lateinit var friendUserByInbox : User
+         
 
-    }
+
     private lateinit var messageInbox:String
     private lateinit var timeInbox:Date
     private lateinit var listener:ChildEventListener
@@ -87,7 +84,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var adapter:ChatActivityRVAdapter
     private var currentUser = User()
     private val viewModel by lazy{
-        ViewModelProvider(this,ChatViewModelFactory(friendUser!!)).get(ChatActivityViewModel::class.java)
+        ViewModelProvider(this, ChatViewModelFactory(friendUserByInbox!!)).get(ChatActivityViewModel::class.java)
     }
 
     private val messageList by lazy{
@@ -99,7 +96,20 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         EmojiManager.install(GoogleEmojiProvider())
         setContentView(binding.root)
-        friendUser?.let { setUpActionBar(it) }
+        friendUserByInbox =intent.getParcelableExtra<User>(Constants.FRIEND_USER)!! //dont use user image and bio as when loaded through inbox activity
+        //we dont have that info so it will be null her
+        friendUserByInbox?.let { setUpActionBar(it) }
+        viewModel.loadUser() // gets the friend user from db
+
+        viewModel.friendUser.observe(this, Observer {
+            friendUserByInbox = it
+
+            if(messageInbox != ""){
+                Firebase.database.reference.child(Constants.CHATS).child(currentUser.id)
+                    .child(friendUserByInbox!!.id).child("imageUrl").setValue(friendUserByInbox!!.userImage)
+            }
+        })
+
         messageInbox =
             if(intent.hasExtra(Constants.INBOX_MESSAGE))
                 intent.getStringExtra(Constants.INBOX_MESSAGE)!!
@@ -127,7 +137,7 @@ class ChatActivity : AppCompatActivity() {
                 adapter = ChatActivityRVAdapter(messageList,currentUser.id)
                 binding.rvChat.layoutManager = LinearLayoutManager(this@ChatActivity)
                 binding.rvChat.adapter = adapter
-                 listentoMsgs(friendUser!!.id)
+                 listentoMsgs(friendUserByInbox!!.id)
 
 
         binding.ivBtnSend.setOnClickListener{
@@ -140,7 +150,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         binding.etMessage.addTextChangedListener{
-            val refTwo = Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUser!!.id)
+            val refTwo = Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUserByInbox!!.id)
                 .child("typing")
             refTwo.setValue(true)
             CoroutineScope(Dispatchers.IO).launch {
@@ -157,7 +167,7 @@ class ChatActivity : AppCompatActivity() {
                 binding.tvToolbarName.text = resources.getString(R.string.Typing)
                 binding.tvToolbarName.setTextColor(ContextCompat.getColor(this,R.color.green))
             }else{
-                binding.tvToolbarName.text = friendUser!!.name
+                binding.tvToolbarName.text = friendUserByInbox!!.name
                 binding.tvToolbarName.setTextColor(ContextCompat.getColor(this,R.color.black))
             }
         })
@@ -218,19 +228,19 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                //do nothing
             }
 
         })
@@ -254,7 +264,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun markasRead(){
-        val ref1= Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUser!!.id)
+        val ref1= Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUserByInbox!!.id)
         Log.d("ref1","$ref1")
         ref1.child(Constants.COUNT).setValue(0)
 
@@ -300,21 +310,23 @@ class ChatActivity : AppCompatActivity() {
     }
     private fun setchatOpen(bool:Boolean){
         val inbox = if(bool){
-            Inbox(messageInbox!!,friendUser!!.id,friendUser!!.name,
-                friendUser!!.userName,friendUser!!.userImage,chatOpen = true,time = timeInbox)
+            Inbox(messageInbox!!,friendUserByInbox!!.id,friendUserByInbox!!.name,
+                friendUserByInbox!!.userName,friendUserByInbox!!.userImage,chatOpen = true,time = timeInbox)
         }else{
-            Inbox(messageInbox!!,friendUser!!.id,friendUser!!.name,
-                friendUser!!.userName,friendUser!!.userImage,chatOpen = false,time = timeInbox)
+            Inbox(messageInbox!!,friendUserByInbox!!.id,friendUserByInbox!!.name,
+                friendUserByInbox!!.userName,friendUserByInbox!!.userImage,chatOpen = false,time = timeInbox)
         }
-        val ref = Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUser!!.id)
+        val ref = Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(
+            friendUserByInbox.id)
+        Log.d("chat Ref","$ref")
         ref.setValue(inbox)
 
     }
 
     override fun onDestroy() {
-        val ref = Firebase.database.reference.child(Constants.MESSAGES).child(getId(friendUser!!.id))
-        val refTwo = Firebase.database.reference.child(Constants.CHATS).child(friendUser!!.id).child(currentUser.id)
-        val refThree =Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUser!!.id)
+        val ref = Firebase.database.reference.child(Constants.MESSAGES).child(getId(friendUserByInbox!!.id))
+        val refTwo = Firebase.database.reference.child(Constants.CHATS).child(friendUserByInbox!!.id).child(currentUser.id)
+        val refThree =Firebase.database.reference.child(Constants.CHATS).child(currentUser.id).child(friendUserByInbox!!.id)
         setchatOpen(false)
         ref.removeEventListener(listener)
         refTwo.child("typing").removeEventListener(listenerTwo)
